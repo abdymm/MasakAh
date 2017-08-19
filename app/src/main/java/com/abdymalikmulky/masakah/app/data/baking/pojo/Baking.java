@@ -1,31 +1,52 @@
 
 package com.abdymalikmulky.masakah.app.data.baking.pojo;
 
+import com.abdymalikmulky.masakah.app.data.DatabaseConfig;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.OneToMany;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
+import org.parceler.Parcel;
 
 import java.util.List;
 
-public class Baking {
+@Table(database = DatabaseConfig.class)
+@Parcel
+public class Baking extends BaseModel {
 
     @SerializedName("id")
     @Expose
-    private Integer id;
+    @Column
+    @PrimaryKey(autoincrement = false)
+    public Integer id;
+
     @SerializedName("name")
     @Expose
-    private String name;
+    @Column
+    public String name;
+
     @SerializedName("ingredients")
     @Expose
-    private List<Ingredient> ingredients = null;
+    public List<Ingredient> ingredients = null;
+
     @SerializedName("steps")
     @Expose
-    private List<Step> steps = null;
+    public List<Step> steps = null;
+
     @SerializedName("servings")
     @Expose
-    private Integer servings;
+    @Column
+    public Integer servings;
+
     @SerializedName("image")
     @Expose
-    private String image;
+    @Column
+    public String image;
 
     public Integer getId() {
         return id;
@@ -43,16 +64,8 @@ public class Baking {
         this.name = name;
     }
 
-    public List<Ingredient> getIngredients() {
-        return ingredients;
-    }
-
     public void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
-    }
-
-    public List<Step> getSteps() {
-        return steps;
     }
 
     public void setSteps(List<Step> steps) {
@@ -67,6 +80,10 @@ public class Baking {
         this.servings = servings;
     }
 
+    public String getImageDrawable() {
+        return getName().toLowerCase().replace(" ", "");
+    }
+
     public String getImage() {
         return image;
     }
@@ -75,4 +92,45 @@ public class Baking {
         this.image = image;
     }
 
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public List<Step> getSteps() {
+        return steps;
+    }
+
+    @OneToMany(methods = OneToMany.Method.ALL, variableName = "ingredients")
+    public List<Ingredient> getIngredientsLocal() {
+        if (ingredients == null) {
+            ingredients = SQLite.select()
+                    .from(Ingredient.class)
+                    .where(Ingredient_Table.bakingId.eq(id))
+                    .queryList();
+        }
+        return ingredients;
+    }
+
+    @OneToMany(methods = OneToMany.Method.ALL, variableName = "steps")
+    public List<Step> getStepsLocal() {
+        if (steps == null) {
+            steps = SQLite.select()
+                    .from(Step.class)
+                    .where(Step_Table.bakingId.eq(id))
+                    .queryList();
+        }
+        return steps;
+    }
+
+    @Override
+    public String toString() {
+        return "Baking{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", ingredients=" + ingredients +
+                ", steps=" + steps +
+                ", servings=" + servings +
+                ", image='" + image + '\'' +
+                '}';
+    }
 }

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MasakAh</string>
+    <string name="list_baking_by">Recipe By <i>%1$s</i></string>
+    <string name="list_baking_desc">This baking have %1$s Servings, %1$s Ingredients, and %1$s Steps.</string>
 </resources>

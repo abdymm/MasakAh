@@ -1,26 +1,63 @@
 
 package com.abdymalikmulky.masakah.app.data.baking.pojo;
 
+import com.abdymalikmulky.masakah.app.data.DatabaseConfig;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
-public class Ingredient {
+import org.parceler.Parcel;
+
+@Table(database = DatabaseConfig.class)
+@Parcel
+public class Ingredient extends BaseModel {
+
+    @Column
+    @PrimaryKey(autoincrement = true)
+    public Integer id;
+
+    @Column
+    public Integer bakingId;
 
     @SerializedName("quantity")
     @Expose
-    private Integer quantity;
+    @Column
+    public double quantity;
+
     @SerializedName("measure")
     @Expose
-    private String measure;
+    @Column
+    public String measure;
+
     @SerializedName("ingredient")
     @Expose
-    private String ingredient;
+    @Column
+    public String ingredient;
 
-    public Integer getQuantity() {
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getBakingId() {
+        return bakingId;
+    }
+
+    public void setBakingId(Integer bakingId) {
+        this.bakingId = bakingId;
+    }
+
+    public double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) {
+    public void setQuantity(double quantity) {
         this.quantity = quantity;
     }
 
@@ -40,4 +77,14 @@ public class Ingredient {
         this.ingredient = ingredient;
     }
 
+    @Override
+    public String toString() {
+        return "Ingredient{" +
+                "id=" + id +
+                ", bakingId=" + bakingId +
+                ", quantity=" + quantity +
+                ", measure='" + measure + '\'' +
+                ", ingredient='" + ingredient + '\'' +
+                '}';
+    }
 }

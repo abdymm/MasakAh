@@ -1,26 +1,45 @@
 
 package com.abdymalikmulky.masakah.app.data.baking.pojo;
 
+import com.abdymalikmulky.masakah.app.data.DatabaseConfig;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
-public class Step {
+import org.parceler.Parcel;
 
+
+@Table(database = DatabaseConfig.class)
+@Parcel
+public class Step extends BaseModel{
+    @Column
+    @PrimaryKey(autoincrement = true)
+    public Integer realId;
     @SerializedName("id")
     @Expose
-    private Integer id;
+    @Column
+    public Integer id;
+    @Column
+    public Integer bakingId;
     @SerializedName("shortDescription")
     @Expose
-    private String shortDescription;
+    @Column
+    public String shortDescription;
     @SerializedName("description")
     @Expose
-    private String description;
+    @Column
+    public String description;
     @SerializedName("videoURL")
     @Expose
-    private String videoURL;
+    @Column
+    public String videoURL;
     @SerializedName("thumbnailURL")
     @Expose
-    private String thumbnailURL;
+    @Column
+    public String thumbnailURL;
 
     public Integer getId() {
         return id;
@@ -28,6 +47,22 @@ public class Step {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getRealId() {
+        return realId;
+    }
+
+    public void setRealId(Integer realId) {
+        this.realId = realId;
+    }
+
+    public Integer getBakingId() {
+        return bakingId;
+    }
+
+    public void setBakingId(Integer bakingId) {
+        this.bakingId = bakingId;
     }
 
     public String getShortDescription() {
@@ -62,4 +97,16 @@ public class Step {
         this.thumbnailURL = thumbnailURL;
     }
 
+    @Override
+    public String toString() {
+        return "Step{" +
+                "realId=" + realId +
+                ", id=" + id +
+                ", bakingId=" + bakingId +
+                ", shortDescription='" + shortDescription + '\'' +
+                ", description='" + description + '\'' +
+                ", videoURL='" + videoURL + '\'' +
+                ", thumbnailURL='" + thumbnailURL + '\'' +
+                '}';
+    }
 }

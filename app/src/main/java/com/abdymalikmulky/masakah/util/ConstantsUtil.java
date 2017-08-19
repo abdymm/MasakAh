@@ -31,6 +31,7 @@ public class ConstantsUtil {
 
     //INTENT KEY
     public static final String INTENT_MASAK = "masak";
+    public static final String INTENT_BAKING = "bake";
 
     /**
      LAYOUT VIEW
