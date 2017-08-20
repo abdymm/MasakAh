@@ -82,7 +82,6 @@ class BakingListAdapter extends RecyclerView.Adapter<BakingListAdapter.ViewHolde
         if (holder.baking.getImage().equals("")) {
             holder.baking.setImage("http://test.com");
         }
-
         holder.itemLayoutHeader.setBackgroundResource(context.getResources().getIdentifier(holder.baking.getImageDrawable(), "drawable", context.getPackageName()));
 
         /* thisis for a valid image url

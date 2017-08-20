@@ -1,0 +1,98 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:clickable="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:orientation="vertical"
+    android:gravity="center_vertical"
+    android:layout_marginBottom="@dimen/margin_between_text_bigger">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view_steps"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        card_view:cardCornerRadius="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_detail">
+
+                <TextView
+                    android:id="@+id/item_baking_step_order"
+                    android:layout_width="@dimen/background_size_step_number"
+                    android:layout_height="@dimen/background_size_step_number"
+                    android:background="@drawable/circle_background"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:text="1"
+                    android:textColor="#fff"
+                    android:textSize="@dimen/text_size_step_number" />
+
+                <TextView
+                    android:id="@+id/item_baking_step_short_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/item_baking_step_order"
+                    android:layout_alignBottom="@+id/item_baking_step_order"
+                    android:layout_marginStart="@dimen/text_margin_step_number"
+                    android:layout_toEndOf="@+id/item_baking_step_order"
+                    android:text="Prep the cookie crust."
+                    android:textSize="@dimen/text_size_step_desc_sort"/>
+
+                <TextView
+                    android:id="@+id/item_baking_step_desc"
+                    android:layout_marginTop="@dimen/margin_between_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=" Whisk the graham cracker crumbs, 50 grams (1/4 cup) of sugar, and 1/2 teaspoon of salt together in a medium bowl. Pour the melted butter and 1 teaspoon of vanilla into the dry ingredients and stir together until evenly mixed."
+                    android:textSize="@dimen/text_size_step_desc"
+                    android:layout_below="@+id/item_baking_step_order"
+                    android:layout_alignParentStart="true"
+                    android:lineSpacingExtra="@dimen/text_size_step_desc_line_padding_between"
+                    />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorWhiteGray" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="@dimen/padding_detail_small">
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tint="@color/colorPrimaryDark"
+                    android:layout_marginRight="@dimen/margin_between_text"
+                    android:src="@drawable/ic_videocam_black_24dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Watch Video"
+                    android:textSize="@dimen/text_size_step_desc_sort"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+</LinearLayout>

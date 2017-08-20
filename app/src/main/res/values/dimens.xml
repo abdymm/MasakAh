@@ -4,5 +4,25 @@
     <dimen name="baking_desc">16sp</dimen>
     <dimen name="baking_by">12sp</dimen>
     <dimen name="margin_between_text">5dp</dimen>
-    <dimen name="margin_between_text_second">10dp</dimen>
+    <dimen name="margin_between_text_small">3dp</dimen>
+    <dimen name="margin_between_text_big">10dp</dimen>
+    <dimen name="margin_between_text_bigger">16dp</dimen>
+    <dimen name="app_bar_height">300dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+
+    <dimen name="baking_detail_title">24sp</dimen>
+    <dimen name="padding_detail">16dp</dimen>
+    <dimen name="padding_detail_small">8dp</dimen>
+
+    <dimen name="text_size_dot">26sp</dimen>
+    <dimen name="text_size_ingredient">14sp</dimen>
+
+    <dimen name="text_padding_step_number">10dp</dimen>
+    <dimen name="text_margin_step_number">10dp</dimen>
+    <dimen name="text_size_step_number">14sp</dimen>
+    <dimen name="text_size_step_desc_sort">14sp</dimen>
+    <dimen name="text_size_step_desc">12sp</dimen>
+    <dimen name="text_size_step_desc_line_padding_between">2sp</dimen>
+    <dimen name="background_size_step_number">35dp</dimen>
 </resources>

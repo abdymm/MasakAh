@@ -17,7 +17,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".app.ui.baking.detail.BakingDetailActivity"></activity>
+        <activity
+            android:name=".app.ui.baking.detail.BakingDetailActivity"
+            android:label="@string/title_activity_baking_detail"
+            android:parentActivityName=".app.ui.baking.list.BakingListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.abdymalikmulky.masakah.app.ui.baking.list.BakingListActivity" />
+        </activity>
     </application>
 
 </manifest>

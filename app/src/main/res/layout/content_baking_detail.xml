@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.abdymalikmulky.masakah.app.ui.baking.detail.BakingDetailActivity"
+    tools:showIn="@layout/activity_baking_detail">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/padding_detail">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/baking_detail_title_ingredients"
+                android:textSize="@dimen/baking_detail_title"
+                android:textStyle="bold"
+                android:id="@+id/baking_detail_title_ingredient"
+                android:layout_marginBottom="@dimen/margin_between_text"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_below="@+id/baking_detail_title_ingredient"
+                android:background="@color/colorGrey"/>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_view_steps"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                card_view:cardCornerRadius="4dp"
+                android:layout_below="@+id/baking_detail_title_ingredient">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/list_baking_ingredients"
+                    android:paddingTop="@dimen/margin_between_text_big"
+                    android:paddingLeft="@dimen/margin_between_text_big"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="vertical"
+                    android:layout_alignParentStart="true" />
+
+            </android.support.v7.widget.CardView>
+
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="@color/colorGrey"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/padding_detail">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/baking_detail_title_steps"
+                android:textSize="@dimen/baking_detail_title"
+                android:textStyle="bold"
+                android:id="@+id/baking_detail_title_step"
+                android:layout_marginBottom="@dimen/margin_between_text"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/list_baking_steps"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_below="@+id/baking_detail_title_step"
+                android:layout_alignParentStart="true" />
+
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="@color/colorGrey"/>
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

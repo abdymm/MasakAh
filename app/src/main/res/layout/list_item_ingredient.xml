@@ -1,0 +1,35 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:clickable="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:orientation="horizontal"
+    android:gravity="center_vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bullet"
+        android:layout_marginRight="@dimen/margin_between_text_big"
+        android:textSize="@dimen/text_size_dot"
+        android:textColor="@color/colorPrimary"/>
+
+    <TextView
+        android:id="@+id/list_baking_ingredients_quantity"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/margin_between_text"
+        android:text="2 CUP"
+        android:textSize="@dimen/text_size_ingredient"/>
+
+    <TextView
+        android:id="@+id/list_baking_ingredients_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Graham Cracker crumbs"
+        android:textSize="@dimen/text_size_ingredient"/>
+
+</LinearLayout>
