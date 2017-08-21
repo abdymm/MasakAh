@@ -1,5 +1,6 @@
 package com.abdymalikmulky.masakah.app.ui.baking.detail;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -14,8 +15,7 @@ import com.abdymalikmulky.masakah.R;
 import com.abdymalikmulky.masakah.app.data.baking.pojo.Baking;
 import com.abdymalikmulky.masakah.app.data.baking.pojo.Ingredient;
 import com.abdymalikmulky.masakah.app.data.baking.pojo.Step;
-import com.abdymalikmulky.masakah.app.ui.baking.detail.ingredient.BakingIngredientAdapter;
-import com.abdymalikmulky.masakah.app.ui.baking.detail.step.BakingStepAdapter;
+import com.abdymalikmulky.masakah.app.ui.baking.detail.step.BakingStepDetailActivity;
 import com.abdymalikmulky.masakah.util.ConstantsUtil;
 
 import org.parceler.Parcels;
@@ -111,12 +111,10 @@ public class BakingDetailActivity extends AppCompatActivity implements BakingDet
         listBakingSteps.setLayoutManager(mLayoutManagerStep);
 
         steps = new ArrayList<>();
-        bakingStepAdapter = new BakingStepAdapter(steps);
+        bakingStepAdapter = new BakingStepAdapter(steps, this);
         listBakingSteps.setAdapter(bakingStepAdapter);
 
     }
-
-
 
 
     @Override
@@ -143,5 +141,13 @@ public class BakingDetailActivity extends AppCompatActivity implements BakingDet
     @Override
     public void showError(String msg) {
 
+    }
+
+    @Override
+    public void onBakingStepClicked(Step step) {
+        Intent detailIntent = new Intent(this, BakingStepDetailActivity.class);
+        detailIntent.putExtra(ConstantsUtil.INTENT_BAKING_NAME, baking.getName());
+        detailIntent.putExtra(ConstantsUtil.INTENT_BAKING_STEP, Parcels.wrap(step));
+        startActivity(detailIntent);
     }
 }

@@ -60,9 +60,13 @@ dependencies {
     compile "com.jakewharton:butterknife:$rootProject.butterknifeVersion"
     annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterknifeVersion"
 
+    //Media Player
+    compile "com.google.android.exoplayer:exoplayer:$rootProject.exoPlayerVersion"
+
     //db debug
     debugCompile "com.amitshekhar.android:debug-db:$rootProject.dbDebugVersion"
 
     testCompile "junit:junit:$rootProject.junitVersion"
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.android.support:support-v4:26.+'
 }

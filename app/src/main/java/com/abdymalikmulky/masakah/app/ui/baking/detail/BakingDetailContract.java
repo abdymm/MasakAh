@@ -23,6 +23,8 @@ public class BakingDetailContract {
         void showSteps(List<Step> steps);
 
         void showError(String msg);
+
+        void onBakingStepClicked(Step step);
     }
 
     interface Presenter extends BasePresenter {

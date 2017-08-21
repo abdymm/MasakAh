@@ -1,4 +1,4 @@
-package com.abdymalikmulky.masakah.app.ui.baking.detail.ingredient;
+package com.abdymalikmulky.masakah.app.ui.baking.detail;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -55,6 +55,7 @@ public class BakingIngredientAdapter extends RecyclerView.Adapter<BakingIngredie
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+
         holder.ingredient = ingredients.get(position);
 
         holder.listBakingIngredientsQuantity.setText(holder.ingredient.getQuantity() + " " + holder.ingredient.getMeasure());

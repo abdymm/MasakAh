@@ -1,10 +1,11 @@
-package com.abdymalikmulky.masakah.app.ui.baking.detail.step;
+package com.abdymalikmulky.masakah.app.ui.baking.detail;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.abdymalikmulky.masakah.R;
@@ -22,10 +23,13 @@ import butterknife.ButterKnife;
 
 public class BakingStepAdapter extends RecyclerView.Adapter<BakingStepAdapter.ViewHolder> {
 
+
     private List<Step> steps;
     private Context context;
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    private BakingDetailContract.View bakingDetailView;
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.item_baking_step_order)
         TextView itemBakingStepOrder;
@@ -33,6 +37,10 @@ public class BakingStepAdapter extends RecyclerView.Adapter<BakingStepAdapter.Vi
         TextView itemBakingStepShortDesc;
         @BindView(R.id.item_baking_step_desc)
         TextView itemBakingStepDesc;
+        @BindView(R.id.item_baking_step_line)
+        View itemBakingStepLine;
+        @BindView(R.id.item_baking_step_layout_watchvideo)
+        LinearLayout itemBakingStepLayoutWatchvideo;
 
         public Step step;
 
@@ -41,10 +49,15 @@ public class BakingStepAdapter extends RecyclerView.Adapter<BakingStepAdapter.Vi
             ButterKnife.bind(this, root);
         }
 
+        @Override
+        public void onClick(View view) {
+            bakingDetailView.onBakingStepClicked(step);
+        }
     }
 
-    public BakingStepAdapter(List<Step> steps) {
+    public BakingStepAdapter(List<Step> steps, BakingDetailContract.View bakingDetailView) {
         this.steps = steps;
+        this.bakingDetailView = bakingDetailView;
     }
 
     @Override
@@ -58,12 +71,18 @@ public class BakingStepAdapter extends RecyclerView.Adapter<BakingStepAdapter.Vi
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+        holder.itemView.setOnClickListener(holder);
+
         holder.step = steps.get(position);
 
-        holder.itemBakingStepOrder.setText(String.valueOf(position+1));
+        holder.itemBakingStepOrder.setText(String.valueOf(position + 1));
         holder.itemBakingStepDesc.setText(holder.step.getDescription());
         holder.itemBakingStepShortDesc.setText(holder.step.getShortDescription());
 
+        showHideWatchVideo(holder, true);
+        if(holder.step.getVideoURL().equals("")) {
+            showHideWatchVideo(holder, false);
+        }
     }
 
     @Override
@@ -75,5 +94,14 @@ public class BakingStepAdapter extends RecyclerView.Adapter<BakingStepAdapter.Vi
         this.steps.clear();
         this.steps = steps;
         notifyDataSetChanged();
+    }
+
+    private void showHideWatchVideo(ViewHolder holder, boolean show) {
+        holder.itemBakingStepLayoutWatchvideo.setVisibility(View.GONE);
+        holder.itemBakingStepLine.setVisibility(View.GONE);
+        if(show) {
+            holder.itemBakingStepLayoutWatchvideo.setVisibility(View.VISIBLE);
+            holder.itemBakingStepLine.setVisibility(View.VISIBLE);
+        }
     }
 }

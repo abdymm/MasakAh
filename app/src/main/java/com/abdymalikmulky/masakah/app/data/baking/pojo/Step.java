@@ -11,10 +11,12 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.parceler.Parcel;
 
+import java.io.Serializable;
+
 
 @Table(database = DatabaseConfig.class)
 @Parcel
-public class Step extends BaseModel{
+public class Step extends BaseModel implements Serializable {
     @Column
     @PrimaryKey(autoincrement = true)
     public Integer realId;

@@ -26,6 +26,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.abdymalikmulky.masakah.app.ui.baking.list.BakingListActivity" />
         </activity>
+        <activity
+            android:name=".app.ui.baking.detail.step.BakingStepDetailActivity"
+            android:label="@string/title_activity_step"
+            android:parentActivityName=".app.ui.baking.detail.BakingDetailActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.abdymalikmulky.masakah.app.ui.baking.detail.BakingDetailActivity" />
+        </activity>
     </application>
 
 </manifest>
