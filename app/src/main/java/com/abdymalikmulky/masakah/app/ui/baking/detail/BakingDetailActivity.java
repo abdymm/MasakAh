@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +16,7 @@ import com.abdymalikmulky.masakah.app.data.baking.pojo.Baking;
 import com.abdymalikmulky.masakah.app.data.baking.pojo.Ingredient;
 import com.abdymalikmulky.masakah.app.data.baking.pojo.Step;
 import com.abdymalikmulky.masakah.app.ui.baking.detail.step.BakingStepDetailActivity;
+import com.abdymalikmulky.masakah.app.ui.baking.detail.step.BakingStepDetailFragment;
 import com.abdymalikmulky.masakah.util.ConstantsUtil;
 
 import org.parceler.Parcels;
@@ -31,8 +32,6 @@ public class BakingDetailActivity extends AppCompatActivity implements BakingDet
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.fab)
-    FloatingActionButton fab;
     @BindView(R.id.toolbar_layout)
     CollapsingToolbarLayout toolbarLayout;
     @BindView(R.id.app_bar)
@@ -45,6 +44,8 @@ public class BakingDetailActivity extends AppCompatActivity implements BakingDet
     TextView bakingDetailTitleStep;
     @BindView(R.id.list_baking_steps)
     RecyclerView listBakingSteps;
+    @BindView(R.id.list_baking_ingredi_step)
+    RecyclerView listBakingIngrediSteps;
 
     private Baking baking;
 
@@ -57,6 +58,7 @@ public class BakingDetailActivity extends AppCompatActivity implements BakingDet
     private BakingStepAdapter bakingStepAdapter;
 
 
+    private boolean isTwoPanel = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,10 +70,20 @@ public class BakingDetailActivity extends AppCompatActivity implements BakingDet
 
         initPresenterAndRepo();
 
+        if(findViewById(R.id.layout_step_detail) != null) {
+            isTwoPanel = true;
 
-        initListIngredients();
+            initListIngreSteps();
 
-        initListSteps();
+        } else {
+            isTwoPanel = false;
+
+            initListIngredients();
+
+            initListSteps();
+        }
+
+
 
         try {
 
@@ -116,6 +128,18 @@ public class BakingDetailActivity extends AppCompatActivity implements BakingDet
 
     }
 
+    private void initListIngreSteps() {
+        listBakingIngrediSteps.setHasFixedSize(true);
+        RecyclerView.LayoutManager mLayoutManagerStep = new LinearLayoutManager(this);
+        listBakingIngrediSteps.setLayoutManager(mLayoutManagerStep);
+
+        steps = new ArrayList<>();
+        bakingStepAdapter = new BakingStepAdapter(steps, this);
+        listBakingIngrediSteps.setAdapter(bakingStepAdapter);
+
+        setFragment(0);
+    }
+
 
     @Override
     public void setPresenter(BakingDetailContract.Presenter presenter) {
@@ -130,11 +154,13 @@ public class BakingDetailActivity extends AppCompatActivity implements BakingDet
 
     @Override
     public void showIngredients(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
         bakingIngredientAdapter.refresh(ingredients);
     }
 
     @Override
     public void showSteps(List<Step> steps) {
+        this.steps = steps;
         bakingStepAdapter.refresh(steps);
     }
 
@@ -144,10 +170,27 @@ public class BakingDetailActivity extends AppCompatActivity implements BakingDet
     }
 
     @Override
-    public void onBakingStepClicked(Step step) {
-        Intent detailIntent = new Intent(this, BakingStepDetailActivity.class);
-        detailIntent.putExtra(ConstantsUtil.INTENT_BAKING_NAME, baking.getName());
-        detailIntent.putExtra(ConstantsUtil.INTENT_BAKING_STEP, Parcels.wrap(step));
-        startActivity(detailIntent);
+    public void onBakingStepClicked(Step step, int order) {
+        if(isTwoPanel) {
+            setFragment(order);
+        } else {
+            Intent detailIntent = new Intent(this, BakingStepDetailActivity.class);
+            detailIntent.putExtra(ConstantsUtil.INTENT_BAKING_NAME, baking.getName());
+            detailIntent.putExtra(ConstantsUtil.INTENT_BAKING_STEP_ORDER, order);
+            detailIntent.putExtra(ConstantsUtil.INTENT_BAKING_STEPS, Parcels.wrap(steps));
+            startActivity(detailIntent);
+        }
     }
+
+    private void setFragment(int order) {
+
+        BakingStepDetailFragment bakingStepDetailFragment = BakingStepDetailFragment.newInstance(steps, order, true);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        fragmentManager.beginTransaction()
+                .replace(R.id.layout_step_detail, bakingStepDetailFragment)
+                .commit();
+    }
+
 }

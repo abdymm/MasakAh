@@ -24,7 +24,7 @@ public class BakingDetailContract {
 
         void showError(String msg);
 
-        void onBakingStepClicked(Step step);
+        void onBakingStepClicked(Step step, int order);
     }
 
     interface Presenter extends BasePresenter {

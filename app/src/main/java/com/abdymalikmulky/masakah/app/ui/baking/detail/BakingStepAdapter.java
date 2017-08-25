@@ -29,7 +29,7 @@ public class BakingStepAdapter extends RecyclerView.Adapter<BakingStepAdapter.Vi
 
     private BakingDetailContract.View bakingDetailView;
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.item_baking_step_order)
         TextView itemBakingStepOrder;
@@ -49,10 +49,6 @@ public class BakingStepAdapter extends RecyclerView.Adapter<BakingStepAdapter.Vi
             ButterKnife.bind(this, root);
         }
 
-        @Override
-        public void onClick(View view) {
-            bakingDetailView.onBakingStepClicked(step);
-        }
     }
 
     public BakingStepAdapter(List<Step> steps, BakingDetailContract.View bakingDetailView) {
@@ -70,10 +66,16 @@ public class BakingStepAdapter extends RecyclerView.Adapter<BakingStepAdapter.Vi
 
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.itemView.setOnClickListener(holder);
-
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.step = steps.get(position);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+                                               @Override
+                                               public void onClick(View view) {
+                                                   bakingDetailView.onBakingStepClicked(holder.step, position);
+                                               }
+                                           });
+
 
         holder.itemBakingStepOrder.setText(String.valueOf(position + 1));
         holder.itemBakingStepDesc.setText(holder.step.getDescription());

@@ -34,6 +34,10 @@ public class ConstantsUtil {
     public static final String INTENT_BAKING = "baking";
     public static final String INTENT_BAKING_NAME = "baking_name";
     public static final String INTENT_BAKING_STEP = "baking_step";
+    public static final String INTENT_BAKING_STEP_ORDER = "baking_step_order";
+    public static final String INTENT_BAKING_STEPS = "baking_steps";
+    public static final String INTENT_BAKING_STEP_TWO_PANEL = "two_panel";
+    public static final String INTENT_BAKING_CURRENT_STEP = "current_step";
 
     /**
      LAYOUT VIEW

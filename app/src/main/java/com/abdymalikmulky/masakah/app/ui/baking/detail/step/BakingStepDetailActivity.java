@@ -11,12 +11,17 @@ import com.abdymalikmulky.masakah.util.ConstantsUtil;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import timber.log.Timber;
 
-public class BakingStepDetailActivity extends AppCompatActivity {
+public class BakingStepDetailActivity extends AppCompatActivity implements OnBakingStepWizardListener {
 
     private String bakingName;
-    private Step step;
+
+    private List<Step> steps;
+    private int order;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +32,9 @@ public class BakingStepDetailActivity extends AppCompatActivity {
         try {
 
             bakingName = getIntent().getExtras().getString(ConstantsUtil.INTENT_BAKING_NAME);
-            step = (Step) Parcels.unwrap(getIntent().getParcelableExtra(ConstantsUtil.INTENT_BAKING_STEP));
+            order = getIntent().getExtras().getInt(ConstantsUtil.INTENT_BAKING_STEP_ORDER);
+            steps = (ArrayList<Step>) Parcels.unwrap(getIntent().getParcelableExtra(ConstantsUtil.INTENT_BAKING_STEPS));
+
 
             setTitle(bakingName);
 
@@ -35,16 +42,21 @@ public class BakingStepDetailActivity extends AppCompatActivity {
             Timber.e(e.toString());
         }
 
-        initFragment();
+        if(savedInstanceState == null) {
+            initFragment();
+        }
     }
 
     private void initFragment() {
-        BakingStepDetailFragment bakingStepDetailFragment = BakingStepDetailFragment.newInstance(step);
+        setFragment(order);
+    }
 
+    private void setFragment(int order) {
+
+        BakingStepDetailFragment bakingStepDetailFragment = BakingStepDetailFragment.newInstance(steps, order, false);
         FragmentManager fragmentManager = getSupportFragmentManager();
-
         fragmentManager.beginTransaction()
-                .add(R.id.layout_step_detail, bakingStepDetailFragment)
+                .replace(R.id.layout_step_detail, bakingStepDetailFragment)
                 .commit();
     }
 
@@ -63,5 +75,11 @@ public class BakingStepDetailActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+    }
+
+
+    @Override
+    public void onNextPrevStep(int order) {
+        setFragment(order);
     }
 }

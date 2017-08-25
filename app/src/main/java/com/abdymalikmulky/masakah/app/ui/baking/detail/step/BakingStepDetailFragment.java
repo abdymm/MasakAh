@@ -1,6 +1,7 @@
 package com.abdymalikmulky.masakah.app.ui.baking.detail.step;
 
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.abdymalikmulky.masakah.R;
@@ -29,14 +31,24 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.TransferListener;
 import com.google.android.exoplayer2.util.Util;
 
+import java.io.Serializable;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
+import timber.log.Timber;
+
+import static com.abdymalikmulky.masakah.util.ConstantsUtil.INTENT_BAKING_STEP_ORDER;
+import static com.abdymalikmulky.masakah.util.ConstantsUtil.INTENT_BAKING_STEP_TWO_PANEL;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class BakingStepDetailFragment extends Fragment {
+
+    private OnBakingStepWizardListener onBakingStepWizardListener;
 
     @BindView(R.id.baking_step_detail_video)
     SimpleExoPlayerView bakingStepDetailVideo;
@@ -46,10 +58,18 @@ public class BakingStepDetailFragment extends Fragment {
     TextView bakingStepDetailShortDesc;
     @BindView(R.id.baking_step_detail_desc)
     TextView bakingStepDetailDesc;
+    @BindView(R.id.baking_step_detail_prev)
+    Button bakingStepDetailPrev;
+    @BindView(R.id.baking_step_detail_next)
+    Button bakingStepDetailNext;
+
     Unbinder unbinder;
+
+    private List<Step> steps;
     private Step step;
-
-
+    private int currentStep;
+    private int totalStep;
+    private boolean isTwoPanel;
 
     private DataSource.Factory mediaDataSourceFactory;
     private SimpleExoPlayer player;
@@ -61,13 +81,21 @@ public class BakingStepDetailFragment extends Fragment {
 
     }
 
-    public static BakingStepDetailFragment newInstance(Step step) {
+    public static BakingStepDetailFragment newInstance(List<Step> steps, int order, boolean isTwoPanel) {
         BakingStepDetailFragment fragment = new BakingStepDetailFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable(ConstantsUtil.INTENT_BAKING_STEP, step);
+        bundle.putInt(INTENT_BAKING_STEP_ORDER, order);
+        bundle.putBoolean(INTENT_BAKING_STEP_TWO_PANEL, isTwoPanel);
+        bundle.putSerializable(ConstantsUtil.INTENT_BAKING_STEPS, (Serializable) steps);
         fragment.setArguments(bundle);
 
         return fragment;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
     }
 
     @Override
@@ -87,9 +115,56 @@ public class BakingStepDetailFragment extends Fragment {
         bandwidthMeter = new DefaultBandwidthMeter();
         mediaDataSourceFactory = new DefaultDataSourceFactory(getActivity(), Util.getUserAgent(getActivity(), "mediaPlayerSample"), (TransferListener<? super DataSource>) bandwidthMeter);
 
-        step = (Step) getArguments().getSerializable(ConstantsUtil.INTENT_BAKING_STEP);
+        steps = (List<Step>) getArguments().getSerializable(ConstantsUtil.INTENT_BAKING_STEPS);
+
+        if(savedInstanceState != null) {
+            currentStep = savedInstanceState.getInt(INTENT_BAKING_STEP_ORDER);
+        } else {
+            currentStep = getArguments().getInt(INTENT_BAKING_STEP_ORDER);
+        }
+
+        totalStep = steps.size();
+        isTwoPanel = getArguments().getBoolean(INTENT_BAKING_STEP_TWO_PANEL, false);
+
+        step = steps.get(currentStep);
+
 
         setData(step);
+        toggleNextPrevButton();
+
+
+        if(!isTwoPanel) {
+            try {
+                onBakingStepWizardListener = (OnBakingStepWizardListener) getActivity();
+            } catch (ClassCastException e) {
+                Timber.e("Error-class %s", e.toString());
+            }
+        }
+    }
+
+    private void toggleNextPrevButton() {
+        if(isTwoPanel) {
+            bakingStepDetailPrev.setVisibility(View.GONE);
+            bakingStepDetailNext.setVisibility(View.GONE);
+        } else {
+            if(currentStep == 0) {
+                bakingStepDetailPrev.setVisibility(View.GONE);
+            } else if(currentStep == steps.size()-1){
+                bakingStepDetailNext.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    @OnClick(R.id.baking_step_detail_prev)
+    public void prev(View view) {
+        currentStep--;
+        onBakingStepWizardListener.onNextPrevStep(currentStep);
+    }
+
+    @OnClick(R.id.baking_step_detail_next)
+    public void next(View view) {
+        currentStep++;
+        onBakingStepWizardListener.onNextPrevStep(currentStep);
     }
 
     private void initializePlayer(String url) {
@@ -143,7 +218,11 @@ public class BakingStepDetailFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if (player == null) {
-            initializePlayer(step.getVideoURL());
+            if(!step.getVideoURL().equals("")) {
+                initializePlayer(step.getVideoURL());
+            } else {
+                bakingStepDetailVideo.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -159,5 +238,11 @@ public class BakingStepDetailFragment extends Fragment {
         super.onStop();
         releasePlayer();
 
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(ConstantsUtil.INTENT_BAKING_STEP_ORDER, currentStep);
     }
 }
