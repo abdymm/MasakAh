@@ -20,6 +20,8 @@
 
     <dimen name="text_size_dot">26sp</dimen>
     <dimen name="text_size_ingredient">14sp</dimen>
+    <dimen name="text_size_dot_wizard">30sp</dimen>
+    <dimen name="text_size_ingredient_wizard">16sp</dimen>
 
     <dimen name="text_padding_step_number">10dp</dimen>
     <dimen name="text_margin_step_number">10dp</dimen>

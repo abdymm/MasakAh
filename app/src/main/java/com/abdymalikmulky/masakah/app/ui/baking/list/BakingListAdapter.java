@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.abdymalikmulky.masakah.R;
 import com.abdymalikmulky.masakah.app.data.baking.pojo.Baking;
+import com.abdymalikmulky.masakah.app.widget.baking.OnClickWidgetListConfig;
 
 import java.util.List;
 
@@ -23,11 +24,12 @@ import butterknife.ButterKnife;
  * Created by abdymalikmulky on 7/7/17.
  */
 
-class BakingListAdapter extends RecyclerView.Adapter<BakingListAdapter.ViewHolder> {
+public class BakingListAdapter extends RecyclerView.Adapter<BakingListAdapter.ViewHolder> {
 
     private List<Baking> bakings;
     private Context context;
     private BakingListContract.View bakingListView;
+    private OnClickWidgetListConfig onListBakingWidgetClick;
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.item_baking_name)
@@ -48,7 +50,11 @@ class BakingListAdapter extends RecyclerView.Adapter<BakingListAdapter.ViewHolde
 
         @Override
         public void onClick(View view) {
-            bakingListView.onBakingClicked(baking);
+            if(bakingListView != null) {
+                bakingListView.onBakingClicked(baking);
+            } else{
+                onListBakingWidgetClick.onClick(baking);
+            }
         }
     }
 
@@ -56,6 +62,13 @@ class BakingListAdapter extends RecyclerView.Adapter<BakingListAdapter.ViewHolde
         this.bakings = bakings;
         this.bakingListView = bakingListView;
     }
+
+    public BakingListAdapter(List<Baking> bakings, OnClickWidgetListConfig onListBakingWidgetClick) {
+        this.bakings = bakings;
+        this.onListBakingWidgetClick = onListBakingWidgetClick;
+    }
+
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

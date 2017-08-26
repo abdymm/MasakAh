@@ -35,7 +35,7 @@
                 android:value="com.abdymalikmulky.masakah.app.ui.baking.detail.BakingDetailActivity" />
         </activity>
 
-        <receiver android:name=".MasakAhWidget">
+        <receiver android:name=".app.widget.MasakAhWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -44,6 +44,19 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/masak_ah_widget_info" />
         </receiver>
+
+        <activity android:name=".app.widget.baking.BakingWidgetConfigActivity"
+            android:label="@string/title_widget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".app.widget.baking.UpdateWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS">
+        </service>
+
     </application>
 
 </manifest>

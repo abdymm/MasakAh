@@ -2,9 +2,10 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:initialKeyguardLayout="@layout/masak_ah_widget"
     android:initialLayout="@layout/masak_ah_widget"
-    android:minHeight="40dp"
-    android:minWidth="40dp"
-    android:previewImage="@drawable/example_appwidget_preview"
+    android:minHeight="250dp"
+    android:minWidth="200dp"
+    android:configure="com.abdymalikmulky.masakah.app.widget.baking.BakingWidgetConfigActivity"
+    android:previewImage="@mipmap/ic_launcher"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="86400000"
     android:widgetCategory="home_screen"></appwidget-provider>

@@ -103,4 +103,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="appwidget_text">OPEN MasakAh App</string>
     <string name="add_widget">Add widget</string>
+    <string name="title_widget">Choose baking on widget</string>
 </resources>

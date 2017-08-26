@@ -32,6 +32,7 @@ public class ConstantsUtil {
     //INTENT KEY
     public static final String INTENT_MASAK = "masak";
     public static final String INTENT_BAKING = "baking";
+    public static final String INTENT_BAKING_ID = "baking_id";
     public static final String INTENT_BAKING_NAME = "baking_name";
     public static final String INTENT_BAKING_STEP = "baking_step";
     public static final String INTENT_BAKING_STEP_ORDER = "baking_step_order";

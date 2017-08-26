@@ -15,7 +15,6 @@
         android:layout_marginRight="@dimen/margin_between_text_big"
         android:textSize="@dimen/text_size_dot"
         android:textColor="@color/colorPrimary"/>
-
     <TextView
         android:id="@+id/list_baking_ingredients_quantity"
         android:textStyle="bold"
