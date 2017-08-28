@@ -41,6 +41,10 @@ public class BakingIngredientListProvider implements RemoteViewsFactory {
         baking = bakingLocal.getBaking(bakingId);
 
         ingredients = baking.getIngredients();
+
+
+
+
     }
 
 
@@ -61,8 +65,7 @@ public class BakingIngredientListProvider implements RemoteViewsFactory {
      */
     @Override
     public RemoteViews getViewAt(int position) {
-        final RemoteViews remoteView = new RemoteViews(
-                context.getPackageName(), R.layout.list_item_wizard_ingredient);
+        final RemoteViews remoteView = new RemoteViews(context.getPackageName(), R.layout.list_item_wizard_ingredient);
         Ingredient ingredient = ingredients.get(position);
         remoteView.setTextViewText(R.id.list_item_wizard_ingredient_quantity, ingredient.getQuantity() + " " + ingredient.getMeasure());
         remoteView.setTextViewText(R.id.list_item_wizard_ingredient_value, ingredient.getIngredient());

@@ -4,16 +4,30 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import com.abdymalikmulky.masakah.R;
+import com.abdymalikmulky.masakah.app.data.baking.BakingLocal;
+import com.abdymalikmulky.masakah.app.data.baking.pojo.Baking;
 import com.abdymalikmulky.masakah.app.widget.baking.UpdateWidgetService;
+import com.abdymalikmulky.masakah.util.ConstantsUtil;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Implementation of App Widget functionality.
  */
 public class MasakAhWidget extends AppWidgetProvider {
+
+    private int bakingId;
+
+    private Baking baking;
+    private BakingLocal bakingLocal;
+
+
+    RemoteViews remoteViews;
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -26,8 +40,16 @@ public class MasakAhWidget extends AppWidgetProvider {
 
     private RemoteViews updateWidgetListView(Context context) {
         //which layout to show on widget
-        RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
+        remoteViews = new RemoteViews(context.getPackageName(),
                 R.layout.masak_ah_widget);
+
+        SharedPreferences prefs = context.getSharedPreferences("pref", MODE_PRIVATE);
+        bakingId = prefs.getInt(ConstantsUtil.INTENT_BAKING_ID, 0);
+
+
+        bakingLocal = new BakingLocal();
+        baking = bakingLocal.getBaking(bakingId);
+        remoteViews.setTextViewText(R.id.titleWidget, baking.getName());
 
         //RemoteViews Service needed to provide adapter for ListView
         Intent svcIntent = new Intent(context, UpdateWidgetService.class);
@@ -41,6 +63,8 @@ public class MasakAhWidget extends AppWidgetProvider {
     public void onEnabled(Context context) {
 
 
+
+
     }
 
     @Override
@@ -48,6 +72,11 @@ public class MasakAhWidget extends AppWidgetProvider {
         Toast.makeText(context, "Good Bye Fellas", Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
+
+    }
 
 }
 

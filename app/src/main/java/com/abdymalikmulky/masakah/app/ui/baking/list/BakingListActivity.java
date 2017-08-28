@@ -3,6 +3,8 @@ package com.abdymalikmulky.masakah.app.ui.baking.list;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,8 +28,14 @@ import butterknife.ButterKnife;
 
 public class BakingListActivity extends AppCompatActivity implements BakingListContract.View {
 
+    //state
+    public final static String LIST_STATE_KEY = "recycler_list_state";
+    private Parcelable listState;
+    private RecyclerView.LayoutManager layoutManager;
+
     @BindView(R.id.list_baking)
     RecyclerView listBaking;
+
 
     private BakingLocal bakingLocal;
     private BakingRemote bakingRemote;
@@ -52,7 +60,7 @@ public class BakingListActivity extends AppCompatActivity implements BakingListC
     private void initPresenterAndRepo() {
         bakingLocal = new BakingLocal();
         bakingRemote = new BakingRemote();
-        bakingRepo = new BakingRepo(bakingLocal, bakingRemote);
+        bakingRepo = new BakingRepo(getApplicationContext(), bakingLocal, bakingRemote);
 
         bakingListPresenter = new BakingListPresenter(bakingRepo, this);
     }
@@ -63,11 +71,12 @@ public class BakingListActivity extends AppCompatActivity implements BakingListC
 
         int columns = initListColumn();
 
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, columns);
+        layoutManager = new GridLayoutManager(this, columns);
 
         listBaking.setLayoutManager(layoutManager);
         bakingListAdapter = new BakingListAdapter(bakings, this);
         listBaking.setAdapter(bakingListAdapter);
+
     }
 
     private int initListColumn() {
@@ -95,13 +104,18 @@ public class BakingListActivity extends AppCompatActivity implements BakingListC
     @Override
     protected void onStart() {
         super.onStart();
+    }
 
-        bakingListPresenter.loadBakings();
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
+        bakingListPresenter.loadBakings();
     }
 
     @Override
@@ -123,10 +137,19 @@ public class BakingListActivity extends AppCompatActivity implements BakingListC
     public void showBakings(List<Baking> bakings) {
         this.bakings = bakings;
         bakingListAdapter.refresh(bakings);
+
+
+        if (listState != null) {
+            layoutManager.onRestoreInstanceState(listState);
+        }
     }
 
     @Override
     public void showError(String msg) {
+        Snackbar snackbar = Snackbar
+                .make(listBaking, msg, Snackbar.LENGTH_LONG);
+        snackbar.show();
+
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
@@ -136,4 +159,24 @@ public class BakingListActivity extends AppCompatActivity implements BakingListC
         detailIntent.putExtra(ConstantsUtil.INTENT_BAKING, Parcels.wrap(baking));
         startActivity(detailIntent);
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle state) {
+        super.onSaveInstanceState(state);
+
+        // Save list state
+        listState = layoutManager.onSaveInstanceState();
+        state.putParcelable(LIST_STATE_KEY, listState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle state) {
+        super.onRestoreInstanceState(state);
+
+        // Retrieve list state and list/item positions
+        if(state != null)
+            listState = state.getParcelable(LIST_STATE_KEY);
+    }
+
+
 }

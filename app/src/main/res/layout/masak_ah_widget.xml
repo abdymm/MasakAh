@@ -12,13 +12,13 @@
         android:textColor="#fff"
         android:textSize="@dimen/baking_title"
         android:padding="@dimen/default_margin"
-        android:id="@+id/textView" />
+        android:id="@+id/titleWidget" />
 
     <ListView
         android:id="@+id/listViewWidget"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/textView" />
+        android:layout_below="@+id/titleWidget" />
 
     <TextView
         android:id="@+id/empty_view"

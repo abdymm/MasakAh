@@ -1,6 +1,9 @@
 package com.abdymalikmulky.masakah.app.data.baking;
 
+import android.content.Context;
+
 import com.abdymalikmulky.masakah.app.data.baking.pojo.Baking;
+import com.abdymalikmulky.masakah.util.NetworkUtil;
 
 import java.util.List;
 
@@ -11,33 +14,51 @@ import java.util.List;
 
 public class BakingRepo implements BakingDataSource {
 
+    private Context context;
+
     private BakingLocal bakingLocal;
     private BakingRemote bakingRemote;
 
-    public BakingRepo(BakingLocal bakingLocal, BakingRemote bakingRemote) {
+    public BakingRepo(Context context, BakingLocal bakingLocal, BakingRemote bakingRemote) {
+        this.context = context;
         this.bakingLocal = bakingLocal;
         this.bakingRemote = bakingRemote;
     }
 
     @Override
     public void load(final FetchBakingCallback callback) {
-        bakingRemote.load(new FetchBakingCallback() {
-            @Override
-            public void onFetched(List<Baking> bakings) {
+        if(NetworkUtil.isNetworkAvailable(context)) {
+            bakingRemote.load(new FetchBakingCallback() {
+                @Override
+                public void onFetched(List<Baking> bakings) {
 
-                saveOnLocal(bakings);
+                    saveOnLocal(bakings);
 
-                callback.onFetched(bakings);
+                    callback.onFetched(bakings);
 
-            }
+                }
 
-            @Override
-            public void onFailed(String errorMessage) {
+                @Override
+                public void onFailed(String errorMessage) {
 
-                callback.onFailed(errorMessage);
+                    callback.onFailed(errorMessage);
 
-            }
-        });
+                }
+            });
+        } else {
+            bakingLocal.load(new FetchBakingCallback() {
+                @Override
+                public void onFetched(List<Baking> bakings) {
+                    callback.onFetched(bakings);
+                }
+
+                @Override
+                public void onFailed(String errorMessage) {
+                    callback.onFailed(errorMessage);
+                }
+            });
+        }
+
     }
 
     private void saveOnLocal(List<Baking> bakings) {

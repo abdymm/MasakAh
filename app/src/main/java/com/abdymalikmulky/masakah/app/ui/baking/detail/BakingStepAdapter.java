@@ -85,6 +85,7 @@ public class BakingStepAdapter extends RecyclerView.Adapter<BakingStepAdapter.Vi
         if(holder.step.getVideoURL().equals("")) {
             showHideWatchVideo(holder, false);
         }
+
     }
 
     @Override

@@ -96,26 +96,7 @@ public class BakingListAdapter extends RecyclerView.Adapter<BakingListAdapter.Vi
             holder.baking.setImage("http://test.com");
         }
         holder.itemLayoutHeader.setBackgroundResource(context.getResources().getIdentifier(holder.baking.getImageDrawable(), "drawable", context.getPackageName()));
-
-        /* thisis for a valid image url
-        Picasso.with(context).load(holder.baking.getImage()).into(new Target(){
-            @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                holder.itemLayoutHeader.setBackground(new BitmapDrawable(context.getResources(), bitmap));
-            }
-
-            @Override
-            public void onBitmapFailed(final Drawable errorDrawable) {
-                holder.itemLayoutHeader.setBackground(errorDrawable);
-            }
-
-            @Override
-            public void onPrepareLoad(final Drawable placeHolderDrawable) {
-                holder.itemLayoutHeader.setBackground(placeHolderDrawable);
-            }
-        });
-        */
-
+        
     }
 
     @Override
@@ -128,4 +109,6 @@ public class BakingListAdapter extends RecyclerView.Adapter<BakingListAdapter.Vi
         this.bakings = bakings;
         notifyDataSetChanged();
     }
+
+
 }

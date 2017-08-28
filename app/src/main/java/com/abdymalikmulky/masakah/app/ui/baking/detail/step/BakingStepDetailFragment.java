@@ -201,6 +201,14 @@ public class BakingStepDetailFragment extends Fragment {
         bakingStepDetailShortDesc.setText(step.getShortDescription());
         bakingStepDetailDesc.setText(step.getDescription());
 
+        //I just confuse, in where i implmenet this picasso library, in reviewer before, i be comanded to implement the thumbnailUrl field, but its null and i dont know its a thumbnail image video or image for the step
+        /*
+        Picasso.with(getActivity().getApplicationContext())
+                .load(step.getThumbnailURL())
+                .placeholder(R.drawable.brownies)
+                .error(R.drawable.brownies)
+                .into(????);
+                */
     }
 
     @Override

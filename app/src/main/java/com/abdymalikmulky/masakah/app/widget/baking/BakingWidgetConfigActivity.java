@@ -2,6 +2,7 @@ package com.abdymalikmulky.masakah.app.widget.baking;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import com.abdymalikmulky.masakah.app.data.baking.BakingDataSource;
 import com.abdymalikmulky.masakah.app.data.baking.BakingLocal;
 import com.abdymalikmulky.masakah.app.data.baking.pojo.Baking;
 import com.abdymalikmulky.masakah.app.ui.baking.list.BakingListAdapter;
+import com.abdymalikmulky.masakah.app.widget.MasakAhWidget;
 import com.abdymalikmulky.masakah.util.ConstantsUtil;
 
 import java.util.ArrayList;
@@ -99,13 +101,18 @@ public class BakingWidgetConfigActivity extends AppCompatActivity implements OnC
             setBakingWizard(baking.getId());
 
             Intent startService = new Intent(this, UpdateWidgetService.class);
-
+            stopService(startService);
             startService.putExtra(EXTRA_APPWIDGET_ID, mAppWidgetId);
-
             startService.setAction("FROM CONFIGURATION ACTIVITY");
-
             setResult(RESULT_OK, startService);
             startService(startService);
+
+
+            Intent intenta = new Intent(this, MasakAhWidget.class);
+            intenta.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+            int ids[] = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), MasakAhWidget.class));
+            intenta.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
+            sendBroadcast(intenta);
 
             finish();
         }

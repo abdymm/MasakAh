@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -46,6 +47,8 @@ public class BakingDetailActivity extends AppCompatActivity implements BakingDet
     RecyclerView listBakingSteps;
     @BindView(R.id.list_baking_ingredi_step)
     RecyclerView listBakingIngrediSteps;
+    @BindView(R.id.baking_step_detail_layout)
+    NestedScrollView bakingStepDetailLayout;
 
     private Baking baking;
 
@@ -70,7 +73,7 @@ public class BakingDetailActivity extends AppCompatActivity implements BakingDet
 
         initPresenterAndRepo();
 
-        if(findViewById(R.id.layout_step_detail) != null) {
+        if (findViewById(R.id.layout_step_detail) != null) {
             isTwoPanel = true;
 
             initListIngreSteps();
@@ -84,11 +87,14 @@ public class BakingDetailActivity extends AppCompatActivity implements BakingDet
         }
 
 
-
         try {
 
             baking = (Baking) Parcels.unwrap(getIntent().getParcelableExtra(ConstantsUtil.INTENT_BAKING));
 
+            Timber.d("DataBaking %s", baking.toString());
+            Timber.d("DataBaking-ingredients %s", baking.toString());
+            Timber.d("DataBaking-steps %s", baking.getIngredients().toString());
+            Timber.d("DataBaking-steps %s", baking.getSteps().toString());
             setTitle(baking.getName());
 
             showBaking(baking);
@@ -97,6 +103,10 @@ public class BakingDetailActivity extends AppCompatActivity implements BakingDet
 
             showSteps(baking.getSteps());
 
+            if(isTwoPanel) {
+                setFragment(0);
+            }
+
         } catch (NullPointerException e) {
             Timber.e(e.toString());
         }
@@ -104,6 +114,21 @@ public class BakingDetailActivity extends AppCompatActivity implements BakingDet
 
     private void initPresenterAndRepo() {
         bakingDetailPresenter = new BakingDetailPresenter(this);
+    }
+
+    private void initListIngreSteps() {
+        steps = new ArrayList<>();
+        ingredients = new ArrayList<>();
+
+        listBakingIngrediSteps.setHasFixedSize(true);
+        RecyclerView.LayoutManager mLayoutManagerStep = new LinearLayoutManager(this);
+        listBakingIngrediSteps.setLayoutManager(mLayoutManagerStep);
+        bakingStepAdapter = new BakingStepAdapter(steps, this);
+        listBakingIngrediSteps.setAdapter(bakingStepAdapter);
+
+        ingredients = new ArrayList<>();
+        bakingIngredientAdapter = new BakingIngredientAdapter(ingredients);
+        listBakingIngredients.setAdapter(bakingIngredientAdapter);
     }
 
     private void initListIngredients() {
@@ -127,19 +152,6 @@ public class BakingDetailActivity extends AppCompatActivity implements BakingDet
         listBakingSteps.setAdapter(bakingStepAdapter);
 
     }
-
-    private void initListIngreSteps() {
-        listBakingIngrediSteps.setHasFixedSize(true);
-        RecyclerView.LayoutManager mLayoutManagerStep = new LinearLayoutManager(this);
-        listBakingIngrediSteps.setLayoutManager(mLayoutManagerStep);
-
-        steps = new ArrayList<>();
-        bakingStepAdapter = new BakingStepAdapter(steps, this);
-        listBakingIngrediSteps.setAdapter(bakingStepAdapter);
-
-        setFragment(0);
-    }
-
 
     @Override
     public void setPresenter(BakingDetailContract.Presenter presenter) {
@@ -171,7 +183,7 @@ public class BakingDetailActivity extends AppCompatActivity implements BakingDet
 
     @Override
     public void onBakingStepClicked(Step step, int order) {
-        if(isTwoPanel) {
+        if (isTwoPanel) {
             setFragment(order);
         } else {
             Intent detailIntent = new Intent(this, BakingStepDetailActivity.class);
@@ -191,6 +203,25 @@ public class BakingDetailActivity extends AppCompatActivity implements BakingDet
         fragmentManager.beginTransaction()
                 .replace(R.id.layout_step_detail, bakingStepDetailFragment)
                 .commit();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putIntArray("ARTICLE_SCROLL_POSITION",
+                new int[]{ bakingStepDetailLayout.getScrollX(), bakingStepDetailLayout.getScrollY()});
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        final int[] position = savedInstanceState.getIntArray("ARTICLE_SCROLL_POSITION");
+        if(position != null)
+            bakingStepDetailLayout.post(new Runnable() {
+                public void run() {
+                    bakingStepDetailLayout.scrollTo(position[0], position[1]);
+                }
+            });
     }
 
 }
