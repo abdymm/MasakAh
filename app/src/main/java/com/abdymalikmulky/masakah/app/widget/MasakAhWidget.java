@@ -62,7 +62,7 @@ public class MasakAhWidget extends AppWidgetProvider {
     @Override
     public void onEnabled(Context context) {
 
-
+        //this method will called when you add the widget to screen
 
 
     }

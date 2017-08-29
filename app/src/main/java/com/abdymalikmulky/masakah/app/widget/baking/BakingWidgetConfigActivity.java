@@ -31,7 +31,7 @@ import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
 
 public class BakingWidgetConfigActivity extends AppCompatActivity implements OnClickWidgetListConfig {
 
-    int mAppWidgetId;
+    private int mAppWidgetId;
 
     @BindView(R.id.widget_list_baking)
     RecyclerView widgetListBaking;
